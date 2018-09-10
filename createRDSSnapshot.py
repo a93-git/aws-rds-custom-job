@@ -1,4 +1,6 @@
-""" Create the snapshot of the given RDS identifier """
+""" Create the snapshot of the given RDS identifier 
+
+    Usage: python3 createRDSSnapshot.py <region> <dbId>"""
 
 def createRDSSnapshot(client, dbId, snapName):
     """ Create snapshot of the given db instance
@@ -9,7 +11,7 @@ def createRDSSnapshot(client, dbId, snapName):
                 dbId - DB Instance identifier of the RDS isntance to create the
                 snapshot
                 snapName - Name of the snapshot
-    Return:
+    Return: Returns a tuple of DB Snapshot status and the snapshot name
 
     Note: 1. It won't create snapshot of Aurora systems
           2. Tags can't be specified, need to add them manually
@@ -21,9 +23,9 @@ def createRDSSnapshot(client, dbId, snapName):
             DBInstanceIdentifier=dbId
             )
     
-        return response['DBSnapshot']['Status']
+        return (response['DBSnapshot']['Status'], snapName)
     except:
-        return 'Error creating snapshot of dbId: ' + dbId
+        return ('Error creating snapshot of dbId: ' + dbId, snapName)
 
 if __name__=='__main__':
     import sys
@@ -40,10 +42,9 @@ if __name__=='__main__':
 
     message['DBIdentifier'] = dbId
 
-    try:
-        message['SnapStatus'] = createRDSSnapshot(client, dbId, snapName)
-    except:
-        message['SnapStatus'] = 'Error creating snapshot'
+    resp = createRDSSnapshot(client, dbId, snapName)
+    message['SnapStatus'] = resp[0]
+    message['SnapshotName'] = resp[1]
     
     # Do something with message: either print it out to console or send a
     # message to an SNS topic
