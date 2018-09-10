@@ -16,7 +16,7 @@ def deleteRDSInstance(client, dbId, snapName):
     try:
         response = client.delete_db_instance(
             DBInstanceIdentifier=dbId,
-            SkipFinalSnapshot=True,
+            SkipFinalSnapshot=False,
             FinalDBSnapshotIdentifier=snapName
             )
     

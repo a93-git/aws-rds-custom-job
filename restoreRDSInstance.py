@@ -30,26 +30,28 @@ def restoreRDSInstance(client, snapId, dbInfo):
     Note: Doesn't apply to Aurora db
     """
 
-    
-    response = client.restore_db_instance_from_db_snapshot(
-        DBInstanceIdentifier=dbInfo['DBInstanceIdentifier'],
-        DBSnapshotIdentifier=snapId,
-        DBInstanceClass=dbInfo['DBInstanceClass'],
-        Port=dbInfo['Port'],
-        AvailabilityZone=dbInfo['AvailabilityZone'],
-        DBSubnetGroupName=dbInfo['DBSubnetGroupName'],
-        MultiAZ=dbInfo['MultiAZ'],
-        PubliclyAccessible=dbInfo['PubliclyAccessible'],
-        AutoMinorVersionUpgrade=dbInfo['AutoMinorVersionUpgrade'],
-        LicenseModel=dbInfo['LicenseModel'],
-        Engine=dbInfo['Engine'],
-        OptionGroupName=dbInfo['OptionGroupName'],
-        StorageType=dbInfo['StorageType'],
-        CopyTagsToSnapshot=dbInfo['CopyTagsToSnapshot'],
-        )
+    try:
+        response = client.restore_db_instance_from_db_snapshot(
+            DBInstanceIdentifier=dbInfo['DBInstanceIdentifier'],
+            DBSnapshotIdentifier=snapId,
+            DBInstanceClass=dbInfo['DBInstanceClass'],
+            Port=dbInfo['Port'],
+            AvailabilityZone=dbInfo['AvailabilityZone'],
+            DBSubnetGroupName=dbInfo['DBSubnetGroupName'],
+            MultiAZ=dbInfo['MultiAZ'],
+            PubliclyAccessible=dbInfo['PubliclyAccessible'],
+            AutoMinorVersionUpgrade=dbInfo['AutoMinorVersionUpgrade'],
+            LicenseModel=dbInfo['LicenseModel'],
+            Engine=dbInfo['Engine'],
+            OptionGroupName=dbInfo['OptionGroupName'],
+            StorageType=dbInfo['StorageType'],
+            CopyTagsToSnapshot=dbInfo['CopyTagsToSnapshot'],
+            )
 
-    return response['DBInstance']['DBInstanceStatus']
-    
+        return response['DBInstance']['DBInstanceStatus']
+    except:
+        return 'Error'
+
 if __name__='__main__':
     import boto3
     import sys

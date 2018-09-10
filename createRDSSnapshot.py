@@ -25,7 +25,7 @@ def createRDSSnapshot(client, dbId, snapName):
     
         return (response['DBSnapshot']['Status'], snapName)
     except:
-        return ('Error creating snapshot of dbId: ' + dbId, snapName)
+        return ('Error', snapName)
 
 if __name__=='__main__':
     import sys
