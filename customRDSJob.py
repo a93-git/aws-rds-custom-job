@@ -116,4 +116,4 @@ if db2_restore_resp is 'Error':
     message['DBRestore'] = 'DB Snapshot restore failed'
 else:
     message['DBRestore'] = 'DB restore in progress; current status is: ' + str(db2_restore_resp)
-sendSNSMessage(client_sns, str(message), topicArn)
+sendSNSMessage.sendSNSMessage(client_sns, str(message), topicArn)
