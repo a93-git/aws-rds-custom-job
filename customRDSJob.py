@@ -102,19 +102,18 @@ else:
         if ret is None:
             message['DB2Delete'] = 'Successfully deleted ' + db2
             break
-    except:
-        count += 1
-        if count >=4:
-            message['DBInstanceDelete'] = 'DB Instance couldn\'t be deleted for 2 hours'
-            sendSNSMessage(client, str(message), topicArn)
-            os._exit(0) # Exit the program if db not deleted for 2 hours
-        pass
+        else:
+            count += 1
+            if count >=4:
+                message['DBInstanceDelete'] = 'DB Instance couldn\'t be deleted for 2 hours'
+                sendSNSMessage(client, str(message), topicArn)
+                os._exit(0) # Exit the program if db not deleted for 2 hours
 
 # 4. Restore db2 from snapshot of db1
-db2_restore_resp = restoreRDSInstance(client_rds, snapName1, dbInfo)
+db2_restore_resp = restoreRDSInstance.restoreRDSInstance(client_rds, snapName1, dbInfo)
 
 if db2_restore_resp is 'Error':
     message['DBRestore'] = 'DB Snapshot restore failed'
 else:
     message['DBRestore'] = 'DB restore in progress; current status is: ' + str(db2_restore_resp)
-sendSNSMessage(client, str(message), topicArn)
+sendSNSMessage(client_sns, str(message), topicArn)

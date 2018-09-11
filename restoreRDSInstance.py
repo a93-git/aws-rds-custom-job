@@ -45,14 +45,14 @@ def restoreRDSInstance(client, snapId, dbInfo):
             Engine=dbInfo['Engine'],
             OptionGroupName=dbInfo['OptionGroupName'],
             StorageType=dbInfo['StorageType'],
-            CopyTagsToSnapshot=dbInfo['CopyTagsToSnapshot'],
+            CopyTagsToSnapshot=True #dbInfo['CopyTagsToSnapshot'],
             )
 
         return response['DBInstance']['DBInstanceStatus']
     except:
         return 'Error'
 
-if __name__='__main__':
+if __name__=='__main__':
     import boto3
     import sys
 
